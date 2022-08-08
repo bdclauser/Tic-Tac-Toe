@@ -1,5 +1,6 @@
 from cProfile import label
 import tkinter as tk
+from itertools import cycle
 from tkinter import font
 from typing import NamedTuple
 
@@ -7,10 +8,29 @@ class Player(NamedTuple):
     label: str
     color: str
 
+# Constants
+BOARD_SIZE = 3
+DEFAULT_PLAYERS = (
+    Player(label="X", color="blue"),
+    Player(label="O", color="green"),
+)
+
 class Move(NamedTuple):
     row: int
     col: int
     lable: str = ""
+
+# define game logic before board logic
+class TicTacToeGame:
+    def __init__(self, players=DEFAULT_PLAYERS, board_size=BOARD_SIZE):
+        self._players = cycle(players)
+        self.board_size = board_size
+        self.current_player = next(self._players)
+        self.winner_combo = []
+        self._current_moves = []
+        self._has_winner = False
+        self._winning_combox = []
+        self._setup_board()
 
 # lets define the board
 class TicTacToeBoard(tk.Tk):
