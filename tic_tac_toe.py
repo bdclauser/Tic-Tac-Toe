@@ -29,8 +29,15 @@ class TicTacToeGame:
         self.winner_combo = []
         self._current_moves = []
         self._has_winner = False
-        self._winning_combox = []
+        self._winning_combos = []
         self._setup_board()
+
+    def _setup_board(self):
+        self._current_moves = [
+            [Move(row, col) for col in range(self.board_size)]
+            for row in range(self.board_size)
+        ]
+        self._winning_combos = self._get_winning_combos()
 
 # lets define the board
 class TicTacToeBoard(tk.Tk):
