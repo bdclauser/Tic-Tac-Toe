@@ -49,6 +49,32 @@ class TicTacToeGame:
         second_diagonal = [col[j] for j, col in enumerate(reversed(columns))]
         return rows + columns + [first_diagonal, second_diagonal]
 
+    def is_valid_move(self, move):
+        #Returns true if the move is valid
+        row, col = move.row, move.col
+        move_was_not_played = self._current_moves[row][col].label == ""
+        no_winner = not self._has_winner
+        return no_winner and move_was_not_played
+    
+    def process_move(self, move):
+        #Process current move anc check if it's a winner
+        row, col = move.row, move.col
+        self._current_moves[row][col] = move
+        for combo in self._winning_combos:
+            results = set(
+                self._current_moves[n][m].label
+                for n, m in combo
+            )
+            is_win = (len(results) == 1) and ("" not in results)
+            if is_win:
+                self._has_winner = True
+                self.winner_combo = combo
+                break
+            
+    def has_winner(self):
+        #Return true if the game has a winner
+        return self._has_winner
+
 # lets define the board
 class TicTacToeBoard(tk.Tk):
     def __init__(self):
